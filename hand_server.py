@@ -8,6 +8,9 @@ import math
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 # Mediapipe el modeli
 mp_hands = mp.solutions.hands
