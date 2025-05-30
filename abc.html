@@ -5,7 +5,7 @@
   <title>ilyo-hand-control</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    #video-stream {
+    #video-preview {
       width: 320px;
       height: 240px;
       border: 2px solid #4CAF50;
@@ -17,8 +17,9 @@
 <body>
   <h1>ilyo-hand-control</h1>
 
-  <!-- Sadece websocketten gelen video gösterimi -->
-  <img id="video-stream" />
+  <!-- Tarayıcı kamerasından canlı video -->
+  <video id="video-preview" autoplay muted playsinline></video>
+  <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
 
   <div id="character-select">
     <p class="select-title">Choose your character</p>
@@ -46,15 +47,25 @@
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
   <script>
-    const socket = io("http://localhost:8000");
+    const socket = io("http://127.0.0.1:8000");  // EC2 IP adresini buraya yaz
+
+    const video = document.getElementById("video-preview");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then((stream) => {
+        video.srcObject = stream;
+
+        setInterval(() => {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const imageBase64 = canvas.toDataURL("image/jpeg").split(',')[1];
+          socket.emit("client-frame", { image: imageBase64 });
+        }, 100);
+      });
 
     socket.on("connect", () => {
       console.log("🔌 WebSocket bağlandı.");
-      socket.emit("start-stream");
-    });
-
-    socket.on("video-feed", (data) => {
-      document.getElementById("video-stream").src = "data:image/jpeg;base64," + data.image;
     });
 
     socket.on("hand-action", (data) => {
