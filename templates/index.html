@@ -24,15 +24,15 @@
   <div id="character-select">
     <p class="select-title">Choose your character</p>
     <div class="char-option">
-      <img src="ilay.png" class="char-icon" data-char="ilay.png">
+      <img src="{{ url_for('static', filename='ilay.png') }}" class="char-icon" data-char="ilay.png">
       <p class="char-name">ilay</p>
     </div>
     <div class="char-option">
-      <img src="furki.png" class="char-icon" data-char="furki.png">
+      <img src="{{ url_for('static', filename='furki.png') }}" class="char-icon" data-char="furki.png">
       <p class="char-name">furki</p>
     </div>
     <div class="char-option">
-      <img src="btop.png" class="char-icon" data-char="btop.png">
+      <img src="{{ url_for('static', filename='btop.png') }}" class="char-icon" data-char="btop.png">
       <p class="char-name">btop</p>
     </div>
   </div>
@@ -76,6 +76,6 @@
     });
   </script>
 
-  <script src="game.js"></script>
+  <<script src="{{ url_for('static', filename='game.js') }}"></script>
 </body>
 </html>
