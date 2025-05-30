@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>ilyo-hand-control</title>
+</head>
+<body>
+  <h1>ilyo-hand-control</h1>
+  <img id="video" width="640" height="480" />
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script>
+    const socket = io("http://localhost:8000");
+
+    socket.on("connect", () => {
+      console.log("🔌 WebSocket bağlandı.");
+      socket.emit("start-stream");
+    });
+
+    // Görüntüyü göster
+    socket.on("video-feed", (data) => {
+      document.getElementById("video").src = "data:image/jpeg;base64," + data.image;
+    });
+
+    // El kapama hareketi geldiğinde space tetikle
+    socket.on("hand-action", (data) => {
+      if (data.action === "space") {
+        console.log("🖐 El kapama algılandı → Space tetiklendi");
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: " " }));
+      }
+    });
+  </script>
+</body>
+</html>

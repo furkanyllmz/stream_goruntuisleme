@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>ilyo-hand-control</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    #video-stream {
+      width: 320px;
+      height: 240px;
+      border: 2px solid #4CAF50;
+      margin: 10px auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>ilyo-hand-control</h1>
+
+  <!-- Sadece websocketten gelen video gösterimi -->
+  <img id="video-stream" />
+
+  <div id="character-select">
+    <p class="select-title">Choose your character</p>
+    <div class="char-option">
+      <img src="ilay.png" class="char-icon" data-char="ilay.png">
+      <p class="char-name">ilay</p>
+    </div>
+    <div class="char-option">
+      <img src="furki.png" class="char-icon" data-char="furki.png">
+      <p class="char-name">furki</p>
+    </div>
+    <div class="char-option">
+      <img src="btop.png" class="char-icon" data-char="btop.png">
+      <p class="char-name">btop</p>
+    </div>
+  </div>
+
+  <div id="game">
+    <div id="stars"></div>
+    <div id="character"></div>
+    <div id="obstacle"></div>
+    <div id="score">Skor: 0</div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+  <script>
+    const socket = io("http://localhost:8000");
+
+    socket.on("connect", () => {
+      console.log("🔌 WebSocket bağlandı.");
+      socket.emit("start-stream");
+    });
+
+    socket.on("video-feed", (data) => {
+      document.getElementById("video-stream").src = "data:image/jpeg;base64," + data.image;
+    });
+
+    socket.on("hand-action", (data) => {
+      if (data.action === "space") {
+        console.log("🖐 El kapama algılandı → Space tetiklendi");
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: " " }));
+      }
+    });
+  </script>
+
+  <script src="game.js"></script>
+</body>
+</html>

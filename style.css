@@ -1,0 +1,99 @@
+body {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+}
+
+#game {
+  width: 800px;
+  height: 200px;
+  background-color: #d0f0ff;
+  border: 2px solid #333;
+  position: relative;
+  margin: 10px auto;
+  overflow: hidden;
+}
+
+#character {
+  width: 24px;
+  height: 36px;
+  background-size: cover;
+  position: absolute;
+  bottom: 0;
+  left: 50px;
+}
+
+/* Ortak stil */
+#obstacle {
+  width: 30px;
+  height: 70px;
+  position: absolute;
+  bottom: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  left: 800px;
+}
+
+
+
+#score {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+#character-select {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.select-title {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.char-option {
+  display: inline-block;
+  margin: 0 10px;
+  text-align: center;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.char-name {
+  font-size: 14px;
+  margin-top: 4px;
+  color: #333;
+}
+
+.char-icon {
+  width: 36px;
+  height: 54px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  margin: 5px;
+}
+.char-icon.selected {
+  border: 2px solid rgb(109, 39, 39);
+}
+
+.star {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-image: url("star.png");
+  background-size: cover;
+  animation: moveStar 5s linear infinite;
+}
+
+@keyframes moveStar {
+  0% { left: 100%; }
+  100% { left: -20px; }
+}
